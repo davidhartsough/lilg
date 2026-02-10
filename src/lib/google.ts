@@ -66,19 +66,6 @@ export async function getEvents(): Promise<CalEvent[]> {
   return events;
 }
 
-/*
-// snippet: string;
-// internalDate: string;
-// messages: {id threadId};
-// messageCount: number;
-// date: string;
-// subject: string;
-// from: string;
-interface Message {
-  id: string;
-  threadId: string;
-}
-*/
 interface Thread {
   id: string;
   snippet: string;
@@ -125,7 +112,6 @@ const params = new URLSearchParams({
   q: "newer_than:35d",
 }).toString();
 
-// threads[] each = id and snippet
 async function getThreads(headers: RequestInit): Promise<Thread[]> {
   const res = await fetch(`${threadsUrl}?${params}`, headers);
   if (!res.ok) {
@@ -136,21 +122,6 @@ async function getThreads(headers: RequestInit): Promise<Thread[]> {
   console.log("threads data:", data);
   return data.threads ?? [];
 }
-
-/*
-// messages[] each = id and threadId
-async function getMessages(headers: RequestInit): Promise<Message[]> {
-  const res = await fetch(`${messagesUrl}?${params}`, headers);
-  // const res = await fetch(`${gmailUrl}threads/${threadId}/messages`, headers);
-  if (!res.ok) {
-    console.error("Failed to fetch messages", res.status);
-    return [];
-  }
-  const data = await res.json();
-  console.log("messages data:", data);
-  return data.messages ?? [];
-}
-*/
 
 const metadataParams = new URLSearchParams({
   format: "metadata",
@@ -164,7 +135,6 @@ metadataParams.append(
 );
 const threadQuery = metadataParams.toString();
 
-// email message IDs and email headers
 async function getThread(threadId: string, headers: RequestInit) {
   const res = await fetch(`${threadsUrl}/${threadId}?${threadQuery}`, headers);
   if (!res.ok) {
@@ -195,17 +165,11 @@ export async function getMail() {
   const headers = { headers: { Authorization: `Bearer ${token}` } };
   console.timeLog("getMail", "got token");
   const threads = await getThreads(headers);
-  console.timeLog("getMail", "got threads");
-  // const messages = await getMessages(headers);
-  // console.timeLog("getMail", "got messages");
+  console.timeLog("getMail", "got threads:", threads.length);
   const threadsData = await Promise.all(
     threads.map(({ id }) => getThread(id, headers)),
   );
-  console.timeLog("getMail", "got thread data");
-  // const messagePromises = messages.map(({ id }) => getMessage(id, headers));
-  // const messagesData = await Promise.all(messagePromises);
-  // console.timeLog("getMail", "got message data");
-  // const gmailData = { threads: threadsData, messages: messagesData };
+  console.timeLog("getMail", "got thread data:", threadsData.length);
   const gmailData: GmailConvo[] = threadsData.map((thread: ThreadData) => ({
     id: thread.id,
     snippet:
