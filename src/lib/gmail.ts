@@ -8,6 +8,7 @@ interface Thread {
 interface MessageData {
   id: string;
   snippet: string;
+  labelIds: string[];
   internalDate: string;
   payload: {
     headers: [
@@ -34,7 +35,10 @@ interface Message {
 }
 interface GmailConvo {
   id: string;
+  snippet: string;
   subject: string;
+  participants: string[];
+  date: number;
   messages: Message[];
 }
 
@@ -66,7 +70,7 @@ metadataParams.append("metadataHeaders", "From");
 // const metadataQuery = metadataParams.toString();
 metadataParams.append(
   "fields",
-  "id,messages(id,snippet,internalDate,payload/headers)",
+  "id,messages(id,snippet,internalDate,labelIds,payload/headers)",
 );
 const threadQuery = metadataParams.toString();
 
@@ -93,8 +97,20 @@ async function getMessage(messageId: string, headers: RequestInit) {
   return data;
 }
 */
+function getParticipants(messages: MessageData[]): string[] {
+  const participants = new Set<string>();
+  messages.forEach((msg) => {
+    if (msg.labelIds.includes("SENT")) return;
+    msg.payload.headers.forEach((h) => {
+      if (h.name === "From") {
+        participants.add(h.value);
+      }
+    });
+  });
+  return Array.from(participants);
+}
 
-export default async function getMail() {
+export default async function getMail(): Promise<GmailConvo[]> {
   console.time("getMail");
   const token = await getAccessToken();
   const headers = { headers: { Authorization: `Bearer ${token}` } };
@@ -109,11 +125,13 @@ export default async function getMail() {
     id: thread.id,
     snippet:
       threads.find(({ id }) => id === thread.id)?.snippet ??
-      thread.messages[-1]?.snippet ??
+      thread.messages.at(-1)?.snippet ??
       "(No snippet)",
     subject:
       thread.messages[0]?.payload.headers.find((h) => h.name === "Subject")
         ?.value ?? "(Unknown subject)",
+    participants: getParticipants(thread.messages),
+    date: Number(thread.messages.at(-1)?.internalDate),
     messages: thread.messages.map((msg) => ({
       id: msg.id,
       snippet: msg.snippet,

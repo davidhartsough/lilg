@@ -2,13 +2,17 @@ import getMail from "@/lib/gmail";
 // import styles from "./page.module.css";
 
 export default async function MailPage() {
-  const mailData = await getMail();
-  const jsonStr = JSON.stringify(mailData, null, 2);
+  const threads = await getMail();
   return (
-    <div>
-      <pre>
-        <code>{jsonStr}</code>
-      </pre>
-    </div>
+    <ul>
+      {threads.map((thread) => (
+        <li key={thread.id}>
+          <p>{thread.participants.join(", ")}</p>
+          <h2>{thread.subject}</h2>
+          <p>{thread.snippet}</p>
+          <p>{thread.date}</p>
+        </li>
+      ))}
+    </ul>
   );
 }

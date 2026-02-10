@@ -1,8 +1,8 @@
-import getEvents, { type CalEvent } from "@/lib/gcal";
+import getEvents from "@/lib/gcal";
 // import styles from "./page.module.css";
 
 export default async function CalPage() {
-  const calEvents: CalEvent[] = await getEvents();
+  const calEvents = await getEvents();
   return (
     <ul>
       {calEvents.map((ev) => (
