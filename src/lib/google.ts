@@ -53,30 +53,29 @@ export async function getEvents(): Promise<CalEvent[]> {
   return events;
 }
 
-interface Message {
-  id: string;
-  threadId: string;
-  // snippet: string;
-  // internalDate: string;
-}
-interface Thread {
-  id: string;
-  snippet: string;
-}
+// snippet: string;
+// internalDate: string;
 // messages: {id threadId};
 // messageCount: number;
 // date: string;
 // subject: string;
 // from: string;
+interface Message {
+  id: string;
+  threadId: string;
+}
+interface Thread {
+  id: string;
+  snippet: string;
+}
 
 const gmailUrl = "https://gmail.googleapis.com/gmail/v1/users/me/";
 const threadsUrl = `${gmailUrl}threads`;
 const messagesUrl = `${gmailUrl}messages`;
 const params = new URLSearchParams({
   maxResults: "40",
-  includeSpamTrash: "false",
   labelIds: "INBOX",
-  q: "in:inbox newer_than:35d category:primary",
+  q: "newer_than:35d",
 }).toString();
 
 // threads[] each = id and snippet
@@ -87,6 +86,7 @@ async function getThreads(headers: RequestInit): Promise<Thread[]> {
     return [];
   }
   const data = await res.json();
+  console.log("threads data:", data);
   return data.threads ?? [];
 }
 
@@ -99,6 +99,7 @@ async function getMessages(headers: RequestInit): Promise<Message[]> {
     return [];
   }
   const data = await res.json();
+  console.log("messages data:", data);
   return data.messages ?? [];
 }
 
@@ -148,7 +149,7 @@ export async function getMail() {
   const threadPromises = threads.map(({ id }) => getThread(id, headers));
   const threadsData = await Promise.all(threadPromises);
   console.timeLog("getMail", "got thread data");
-  const messagePromises = messages.map((m) => getMessage(m.id, headers));
+  const messagePromises = messages.map(({ id }) => getMessage(id, headers));
   const messagesData = await Promise.all(messagePromises);
   console.timeLog("getMail", "got message data");
   const gmailData = { threads: threadsData, messages: messagesData };
