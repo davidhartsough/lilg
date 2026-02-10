@@ -1,4 +1,4 @@
-import { type CalEvent, getEvents } from "@/lib/google";
+import getEvents, { type CalEvent } from "@/lib/gcal";
 // import styles from "./page.module.css";
 
 export default async function CalPage() {

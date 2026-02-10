@@ -1,4 +1,4 @@
-import { getMail } from "@/lib/google";
+import getMail from "@/lib/gmail";
 // import styles from "./page.module.css";
 
 export default async function MailPage() {
