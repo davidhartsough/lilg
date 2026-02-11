@@ -14,8 +14,8 @@
   display: block;
   text-align: center;
   color: #e8eaed;
-  background-color: hsla(var(--fg-hsl) 0.03);
-  border: 1px solid hsla(var(--fg-hsl) 0.64);
+  background-color: hsl(var(--fg-hsl) / 0.03);
+  border: 1px solid hsl(var(--fg-hsl) / 0.64);
   padding: 0.75rem 1rem;
   margin: 0;
   border-radius: 0.5rem;
@@ -32,13 +32,13 @@
   transform: scale(1.05);
 }
 .link:hover {
-  background-color: hsla(var(--fg-hsl) 0.1);
-  border-color: hsla(var(--fg-hsl) 0.8);
+  background-color: hsl(var(--fg-hsl) / 0.1);
+  border-color: hsl(var(--fg-hsl) / 0.8);
 }
 .link:active,
 .link:focus {
-  background-color: hsla(var(--fg-hsl) 0.24);
-  border-color: hsla(var(--fg-hsl) 0.95);
+  background-color: hsl(var(--fg-hsl) / 0.24);
+  border-color: hsl(var(--fg-hsl) / 0.95);
 }
 .google {
   text-transform: none;

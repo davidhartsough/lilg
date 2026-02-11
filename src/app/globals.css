@@ -3,9 +3,9 @@
     ui-sans-serif, system-ui, -apple-system, "BlinkMacSystemFont", "Segoe UI",
     "Roboto", "Helvetica Neue", "Arial", "Noto Sans", sans-serif;
   --black: #101214;
-  --black-hsl: 210 11 7;
+  --black-hsl: 210 11% 7%;
   --white: #f8f9fa;
-  --white-hsl: 210 17 98;
+  --white-hsl: 210 17% 98%;
   --bg: var(--white);
   --fg: var(--black);
   --bg-hsl: var(--white-hsl);
