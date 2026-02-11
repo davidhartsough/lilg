@@ -1,3 +1,4 @@
+"use server";
 import "server-only";
 import getAccessToken from "./tokens";
 
@@ -29,7 +30,8 @@ interface GCalEventData {
 }
 
 export default async function getEvents(): Promise<CalEvent[]> {
-  const token = await getAccessToken();
+  const token = await getAccessToken("cal");
+
   const now = new Date();
   const timeMin = now.toISOString();
   const timeMax = new Date(now.getTime() + _35Days).toISOString();
@@ -42,14 +44,18 @@ export default async function getEvents(): Promise<CalEvent[]> {
     eventTypes: "default",
     fields: "items(id,summary,description,location,status,start,end)",
   }).toString();
+
   const res = await fetch(`${calendarUrl}?${params}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
   if (!res.ok) {
     console.error("Failed to fetch calendar events", res.status);
     return [];
   }
+
   const data = await res.json();
+
   const items: GCalEventData[] = data.items ?? [];
   const events: CalEvent[] = items
     .filter((e) => e.status !== "cancelled" && !!e.start.dateTime)

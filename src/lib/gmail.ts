@@ -1,3 +1,4 @@
+"use server";
 import "server-only";
 import getAccessToken from "./tokens";
 
@@ -112,15 +113,18 @@ function getParticipants(messages: MessageData[]): string[] {
 
 export default async function getMail(): Promise<GmailConvo[]> {
   console.time("getMail");
-  const token = await getAccessToken();
+  const token = await getAccessToken("mail");
+
   const headers = { headers: { Authorization: `Bearer ${token}` } };
   console.timeLog("getMail", "got token");
   const threads = await getThreads(headers);
   console.timeLog("getMail", "got threads:", threads.length);
+
   const threadsData = await Promise.all(
     threads.map(({ id }) => getThread(id, headers)),
   );
   console.timeLog("getMail", "got thread data:", threadsData.length);
+
   const gmailData: GmailConvo[] = threadsData.map((thread: ThreadData) => ({
     id: thread.id,
     snippet:
