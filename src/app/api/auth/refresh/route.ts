@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { getSession, setSession } from "@/lib/session";
 
 const tokenUrl = "https://oauth2.googleapis.com/token";
@@ -44,5 +44,6 @@ export async function GET(request: NextRequest) {
     expiresAt: Date.now() + data.expires_in * 1000,
   });
 
-  redirect(`/${goto}` || "/");
+  const dest = goto === "mail" || goto === "cal" ? `/${goto}` : "/";
+  return NextResponse.redirect(new URL(dest, request.url));
 }
