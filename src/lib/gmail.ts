@@ -59,7 +59,7 @@ async function getThreads(headers: RequestInit): Promise<Thread[]> {
     return [];
   }
   const data = await res.json();
-  console.log("threads data:", data);
+  // console.log("threads data:", data);
   return data.threads ?? [];
 }
 
@@ -120,10 +120,18 @@ export default async function getMail(): Promise<GmailConvo[]> {
   const threads = await getThreads(headers);
   console.timeLog("getMail", "got threads:", threads.length);
 
-  const threadsData = await Promise.all(
-    threads.map(({ id }) => getThread(id, headers)),
+  const promises = await Promise.allSettled(
+    threads.slice(0, 10).map(({ id }) => getThread(id, headers)),
   );
-  console.timeLog("getMail", "got thread data:", threadsData.length);
+  console.timeLog("getMail", "got thread data:", promises.length);
+  console.log(promises);
+
+  const threadsData = promises
+    .filter((p) => p.status === "fulfilled")
+    .map((p) => p.value)
+    .filter((d) => !!d && !!d.messages && d.messages.length > 0);
+
+  console.log(threadsData);
 
   const gmailData: GmailConvo[] = threadsData.map((thread: ThreadData) => ({
     id: thread.id,
