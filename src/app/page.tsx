@@ -6,28 +6,26 @@ export default async function Home() {
   const isSignedIn = await isLoggedIn();
   return (
     <main>
-      <header>
+      <header className={styles.header}>
         <h1>lil' g</h1>
       </header>
       <section>
-        {isSignedIn ? (
-          <nav className={styles.nav}>
-            <ul className={styles.links}>
-              <li>
-                <Link href="/mail">Email</Link>
-              </li>
-              <li>
-                <Link href="/cal">Calendar</Link>
-              </li>
-            </ul>
-          </nav>
-        ) : (
-          <div className={styles.login}>
-            <a className={styles.google} href="/api/auth/login">
+        <nav className={styles.nav}>
+          {isSignedIn ? (
+            <>
+              <Link href="/mail" className={styles.link}>
+                Email
+              </Link>
+              <Link href="/cal" className={styles.link}>
+                Calendar
+              </Link>
+            </>
+          ) : (
+            <a className={styles.link} href="/api/auth/login">
               Sign in with Google
             </a>
-          </div>
-        )}
+          )}
+        </nav>
       </section>
     </main>
   );
