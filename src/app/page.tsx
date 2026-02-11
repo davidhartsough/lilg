@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { isLoggedIn } from "@/lib/session";
 import styles from "./page.module.css";
 
@@ -13,12 +12,12 @@ export default async function Home() {
         <nav className={styles.nav}>
           {isSignedIn ? (
             <>
-              <Link href="/mail" className={styles.link}>
+              <a href="/mail" className={styles.link}>
                 Email
-              </Link>
-              <Link href="/cal" className={styles.link}>
+              </a>
+              <a href="/cal" className={styles.link}>
                 Calendar
-              </Link>
+              </a>
             </>
           ) : (
             <a
