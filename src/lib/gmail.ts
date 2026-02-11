@@ -84,6 +84,7 @@ async function getThread(threadId: string, headers: RequestInit) {
   const data = await res.json();
   return data;
 }
+
 /*
 async function getMessage(messageId: string, headers: RequestInit) {
   const res = await fetch(
@@ -98,6 +99,7 @@ async function getMessage(messageId: string, headers: RequestInit) {
   return data;
 }
 */
+
 function getParticipants(messages: MessageData[]): string[] {
   const participants = new Set<string>();
   messages.forEach((msg) => {
@@ -154,5 +156,6 @@ export default async function getMail(): Promise<GmailConvo[]> {
     })),
   }));
   console.timeEnd("getMail");
+  console.log("gmailData.length:", gmailData.length);
   return gmailData;
 }

@@ -3,7 +3,9 @@ import getMail from "@/lib/gmail";
 // import styles from "./page.module.css";
 
 export default async function MailPage() {
+  console.log("Rendering mail page");
   const threads = await getMail();
+  console.log(threads);
   return (
     <ul>
       {threads.map((thread) => (
