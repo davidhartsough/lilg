@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lil' G",
+  title: "lil' g",
   description:
     "Super simple, minimal Google app info from Gmail and Google Calendar.",
 };
