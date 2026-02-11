@@ -8,9 +8,11 @@ export default function MailLayout({
   return (
     <main>
       <header>
-        <h1>
-          <Link href="/">lil' g</Link> • mail
-        </h1>
+        <nav>
+          <h1>
+            <Link href="/">lil' g</Link> • mail
+          </h1>
+        </nav>
       </header>
       <section>{children}</section>
     </main>
