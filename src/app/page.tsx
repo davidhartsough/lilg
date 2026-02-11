@@ -21,7 +21,10 @@ export default async function Home() {
               </Link>
             </>
           ) : (
-            <a className={styles.link} href="/api/auth/login">
+            <a
+              className={`${styles.link} ${styles.google}`}
+              href="/api/auth/login"
+            >
               Sign in with Google
             </a>
           )}
