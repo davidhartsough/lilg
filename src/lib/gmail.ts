@@ -59,7 +59,6 @@ async function getThreads(headers: RequestInit): Promise<Thread[]> {
     return [];
   }
   const data = await res.json();
-  // console.log("threads data:", data);
   return data.threads ?? [];
 }
 
@@ -114,27 +113,18 @@ function getParticipants(messages: MessageData[]): string[] {
 }
 
 export default async function getMail(): Promise<GmailConvo[]> {
-  console.log("getMail()");
-  console.time("getMail");
   const token = await getAccessToken();
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
-  console.timeLog("getMail", "got token");
   const threads = await getThreads(headers);
-  console.timeLog("getMail", "got threads:", threads.length);
 
   const promises = await Promise.allSettled(
     threads.map(({ id }) => getThread(id, headers)),
   );
-  console.timeLog("getMail", "got thread data:", promises.length);
-  console.log(promises);
-
   const threadsData = promises
     .filter((p) => p.status === "fulfilled")
     .map((p) => p.value)
     .filter((d) => !!d && !!d.messages && d.messages.length > 0);
-
-  console.log(threadsData);
 
   const gmailData: GmailConvo[] = threadsData.map((thread: ThreadData) => ({
     id: thread.id,
@@ -156,7 +146,5 @@ export default async function getMail(): Promise<GmailConvo[]> {
         "(Unknown sender)",
     })),
   }));
-  console.timeEnd("getMail");
-  console.log("gmailData.length:", gmailData.length);
   return gmailData;
 }
