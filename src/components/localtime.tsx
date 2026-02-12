@@ -2,22 +2,38 @@
 
 import { useEffect, useState } from "react";
 
-export default function LocalTime({ datetime }: { datetime: string | number }) {
+const fullDateTimeOptions: Intl.DateTimeFormatOptions = {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  dayPeriod: "narrow",
+};
+const timeOnlyOptions: Intl.DateTimeFormatOptions = {
+  hour: "numeric",
+  minute: "numeric",
+  dayPeriod: "narrow",
+};
+
+export default function LocalTime({
+  datetime,
+  timeOnly = false,
+}: {
+  datetime: string | number;
+  timeOnly?: boolean;
+}) {
   const [localTime, setLocalTime] = useState("");
   const [ISOString, setISOString] = useState("");
   useEffect(() => {
     const date = new Date(datetime);
     setLocalTime(
-      date.toLocaleString(undefined, {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        dayPeriod: "narrow",
-      }),
+      date.toLocaleString(
+        undefined,
+        timeOnly ? timeOnlyOptions : fullDateTimeOptions,
+      ),
     );
     setISOString(date.toISOString());
-  }, [datetime]);
+  }, [datetime, timeOnly]);
   return localTime ? <time dateTime={ISOString}>{localTime}</time> : null;
 }

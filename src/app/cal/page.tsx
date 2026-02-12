@@ -11,7 +11,9 @@ export default async function CalPage() {
           <p className="smaller">{ev.description}</p>
           <p>{ev.location}</p>
           <p>
-            <LocalTime datetime={ev.start} /> - <LocalTime datetime={ev.end} />
+            <LocalTime datetime={ev.start} />
+            &ndash;
+            <LocalTime datetime={ev.end} timeOnly />
           </p>
         </li>
       ))}
