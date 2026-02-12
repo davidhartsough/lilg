@@ -2,9 +2,7 @@ import LocalTime from "@/components/localtime";
 import getMail from "@/lib/gmail";
 
 export default async function MailPage() {
-  console.log("Rendering mail page");
   const threads = await getMail();
-  console.log(threads);
   return (
     <ul>
       {threads.map((thread) => (
@@ -13,8 +11,14 @@ export default async function MailPage() {
             <strong>{thread.participants.join(", ")}</strong>
           </p>
           <h2>{thread.subject}</h2>
-          <p className="smaller">
-            {thread.snippet.replace(/&#39;/g, "'").trim()}
+          <p className="smaller show-line-breaks">
+            {thread.snippet
+              .replace(/&#39;/g, "'")
+              .replace(/\n\s*\n+/g, "\n")
+              .split("\n")
+              .map((line) => line.replace(/[\p{Z}\p{Cf}\p{Cc}]+/gu, " ").trim())
+              .join("\n")
+              .replace(/ +/g, " ")}
             {thread.snippet.length > 150 && <span>&hellip;</span>}
           </p>
           <p>

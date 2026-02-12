@@ -8,11 +8,18 @@ export default async function CalPage() {
       {calEvents.map((ev) => (
         <li key={ev.id}>
           <h2>{ev.title}</h2>
-          <p className="smaller">{ev.description}</p>
+          <p className="smaller show-line-breaks">
+            {ev.description
+              .replace(/\n\s*\n+/g, "\n")
+              .split("\n")
+              .map((line) => line.replace(/[\p{Z}\p{Cf}\p{Cc}]+/gu, " ").trim())
+              .join("\n")
+              .replace(/ +/g, " ")}
+          </p>
           <p>{ev.location}</p>
           <p>
             <LocalTime datetime={ev.start} />
-            &ndash;
+            <span> &ndash; </span>
             <LocalTime datetime={ev.end} timeOnly />
           </p>
         </li>

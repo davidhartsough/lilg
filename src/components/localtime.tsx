@@ -8,12 +8,10 @@ const fullDateTimeOptions: Intl.DateTimeFormatOptions = {
   day: "numeric",
   hour: "numeric",
   minute: "numeric",
-  dayPeriod: "narrow",
 };
 const timeOnlyOptions: Intl.DateTimeFormatOptions = {
   hour: "numeric",
   minute: "numeric",
-  dayPeriod: "narrow",
 };
 
 export default function LocalTime({
