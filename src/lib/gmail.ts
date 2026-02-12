@@ -114,8 +114,9 @@ function getParticipants(messages: MessageData[]): string[] {
 }
 
 export default async function getMail(): Promise<GmailConvo[]> {
+  console.log("getMail()");
   console.time("getMail");
-  const token = await getAccessToken("mail");
+  const token = await getAccessToken();
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
   console.timeLog("getMail", "got token");
@@ -123,7 +124,7 @@ export default async function getMail(): Promise<GmailConvo[]> {
   console.timeLog("getMail", "got threads:", threads.length);
 
   const promises = await Promise.allSettled(
-    threads.slice(0, 10).map(({ id }) => getThread(id, headers)),
+    threads.slice(0, 2).map(({ id }) => getThread(id, headers)),
   );
   console.timeLog("getMail", "got thread data:", promises.length);
   console.log(promises);

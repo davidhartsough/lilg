@@ -45,11 +45,6 @@ export async function GET(request: NextRequest) {
     redirect("/api/auth/logout");
   }
   const tokens = await res.json();
-  const expiresAt = Date.now() + tokens.expires_in * 1000;
-  await setSession({
-    accessToken: tokens.access_token,
-    refreshToken: tokens.refresh_token,
-    expiresAt,
-  });
+  await setSession(tokens.refresh_token);
   redirect("/");
 }

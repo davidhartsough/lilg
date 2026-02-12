@@ -1,4 +1,3 @@
-"use server";
 import "server-only";
 import {
   getIronSession,
@@ -10,9 +9,7 @@ import { cookies } from "next/headers";
 // https://github.com/vvo/iron-session
 
 export interface SessionData {
-  accessToken: string;
   refreshToken: string;
-  expiresAt: number;
 }
 
 const sessionPassword = (process.env.SESSION_PASSWORD as string) || "";
@@ -25,6 +22,8 @@ const sessionOptions: SessionOptions = {
   password: sessionPassword,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
     sameSite: "lax",
     httpOnly: true,
   },
@@ -35,17 +34,10 @@ export async function getSession(): Promise<IronSession<SessionData>> {
   return getIronSession<SessionData>(cookieStore, sessionOptions);
 }
 
-export async function setSession(data: SessionData) {
+export async function setSession(refreshToken: string) {
   const session = await getSession();
-  session.accessToken = data.accessToken;
-  session.refreshToken = data.refreshToken;
-  session.expiresAt = data.expiresAt;
+  session.refreshToken = refreshToken;
   await session.save();
-}
-
-export async function isLoggedIn(): Promise<boolean> {
-  const session = await getSession();
-  return !!session.accessToken && !!session.refreshToken;
 }
 
 export async function endSession() {

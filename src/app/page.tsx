@@ -1,8 +1,8 @@
-import { isLoggedIn } from "@/lib/session";
+import { hasAccessToken } from "@/lib/tokens";
 import styles from "./page.module.css";
 
 export default async function Home() {
-  const isSignedIn = await isLoggedIn();
+  const isLoggedIn = await hasAccessToken();
   return (
     <main>
       <header className={styles.header}>
@@ -10,7 +10,7 @@ export default async function Home() {
       </header>
       <section>
         <nav className={styles.nav}>
-          {isSignedIn ? (
+          {isLoggedIn ? (
             <>
               <a href="/mail" className={styles.link}>
                 Email

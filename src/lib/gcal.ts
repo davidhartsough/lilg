@@ -30,7 +30,7 @@ interface GCalEventData {
 }
 
 export default async function getEvents(): Promise<CalEvent[]> {
-  const token = await getAccessToken("cal");
+  const token = await getAccessToken();
 
   const now = new Date();
   const timeMin = now.toISOString();
