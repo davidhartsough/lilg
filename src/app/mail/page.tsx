@@ -14,7 +14,8 @@ export default async function MailPage() {
           </p>
           <h2>{thread.subject}</h2>
           <p className="smaller">
-            {thread.snippet.replace(/&#39;/g, "'")} &hellip;
+            {thread.snippet.replace(/&#39;/g, "'").trim()}
+            {thread.snippet.length > 150 && <span>&hellip;</span>}
           </p>
           <p>
             <LocalTime datetime={thread.date} />
