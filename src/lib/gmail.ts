@@ -47,7 +47,7 @@ const gmailUrl = "https://gmail.googleapis.com/gmail/v1/users/me/";
 const threadsUrl = `${gmailUrl}threads`;
 // const messagesUrl = `${gmailUrl}messages`;
 const params = new URLSearchParams({
-  maxResults: "40",
+  maxResults: "25",
   labelIds: "INBOX",
   q: "newer_than:35d",
 }).toString();
@@ -124,7 +124,7 @@ export default async function getMail(): Promise<GmailConvo[]> {
   console.timeLog("getMail", "got threads:", threads.length);
 
   const promises = await Promise.allSettled(
-    threads.slice(0, 2).map(({ id }) => getThread(id, headers)),
+    threads.map(({ id }) => getThread(id, headers)),
   );
   console.timeLog("getMail", "got thread data:", promises.length);
   console.log(promises);
