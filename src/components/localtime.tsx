@@ -10,12 +10,11 @@ export default function LocalTime({ datetime }: { datetime: string | number }) {
     setLocalTime(
       date.toLocaleString(undefined, {
         weekday: "short",
-        year: "numeric",
         month: "short",
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
-        dayPeriod: "short",
+        dayPeriod: "narrow",
       }),
     );
     setISOString(date.toISOString());
