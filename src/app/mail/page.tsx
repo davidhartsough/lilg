@@ -14,10 +14,8 @@ export default async function MailPage() {
           <p className="smaller show-line-breaks">
             {thread.snippet
               .replace(/&#39;/g, "'")
-              .replace(/\n\s*\n+/g, "\n")
-              .split("\n")
-              .map((line) => line.replace(/[\p{Z}\p{Cf}\p{Cc}]+/gu, " ").trim())
-              .join("\n")
+              .replace(/[^\p{L}\p{N}\p{P}\p{S}\n\x20]+/gu, " ")
+              .replace(/\n+/g, "\n")
               .replace(/ +/g, " ")}
             {thread.snippet.length > 150 && <span>&hellip;</span>}
           </p>
