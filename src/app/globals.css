@@ -57,7 +57,7 @@ h1 {
 }
 h2 {
   font-weight: 300;
-  font-size: 1.625rem;
+  font-size: 1.25rem;
   margin: 0.25rem 0 0.5rem;
   line-height: 1.25;
 }
@@ -74,5 +74,8 @@ li {
   text-align: center;
 }
 .loading {
+  font-size: 0.875rem;
+}
+.smaller {
   font-size: 0.875rem;
 }

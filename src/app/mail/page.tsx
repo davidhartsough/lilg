@@ -1,6 +1,5 @@
 import LocalTime from "@/components/localtime";
 import getMail from "@/lib/gmail";
-// import styles from "./page.module.css";
 
 export default async function MailPage() {
   console.log("Rendering mail page");
@@ -10,9 +9,13 @@ export default async function MailPage() {
     <ul>
       {threads.map((thread) => (
         <li key={thread.id}>
-          <p>{thread.participants.join(", ")}</p>
+          <p>
+            <strong>{thread.participants.join(", ")}</strong>
+          </p>
           <h2>{thread.subject}</h2>
-          <p>{thread.snippet}</p>
+          <p className="smaller">
+            {thread.snippet.replace(/&#39;/g, "'")} &hellip;
+          </p>
           <p>
             <LocalTime datetime={thread.date} />
           </p>
