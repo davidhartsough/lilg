@@ -4,8 +4,8 @@ import styles from "./page.module.css";
 export default async function Home() {
   const isLoggedIn = await hasAccessToken();
   return (
-    <main>
-      <header className={styles.header}>
+    <main className="centered">
+      <header>
         <h1>lil' g</h1>
       </header>
       <section>
